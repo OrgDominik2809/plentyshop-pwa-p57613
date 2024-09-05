@@ -52,7 +52,7 @@
           <span>{{ t('excludedShipping') }}</span>
         </div>
 
-        <VariationProperties :product="product" />
+        <VariationProperties :product="lastUpdatedProduct" />
       </div>
       <div class="py-8 px-10">
         <div class="mb-8">
@@ -95,6 +95,7 @@ import { SfIconClose } from '@storefront-ui/vue';
 import type { QuickCheckoutProps } from './types';
 import { cartGetters, productGetters } from '@plentymarkets/shop-api';
 import ProductPrice from '~/components/ProductPrice/ProductPrice.vue';
+import { paths } from '~/utils/paths';
 
 defineProps<QuickCheckoutProps>();
 
@@ -102,7 +103,7 @@ const { t, n } = useI18n();
 const runtimeConfig = useRuntimeConfig();
 const showNetPrices = runtimeConfig.public.showNetPrices;
 const localePath = useLocalePath();
-const { data: cart } = useCart();
+const { data: cart, lastUpdatedProduct } = useCart();
 const { isAvailable, loadConfig } = usePayPal();
 const { addModernImageExtension } = useModernImage();
 const { isOpen, timer, startTimer, endTimer, closeQuickCheckout, hasTimer, quantity } = useQuickCheckout();

@@ -41,7 +41,7 @@
             <SfIconFavorite />
             <SfBadge
               :content="wishlistItemIds.length"
-              class="outline outline-primary-500 bg-white !text-neutral-900 group-hover:outline-primary-800 group-active:outline-primary-700 flex justify-center"
+              class="outline outline-primary-500 bg-white !text-neutral-900 group-hover:outline-primary-800 group-active:outline-primary-700 flex justify-center text-xs leading-3"
               data-testid="wishlist-badge"
             />
           </template>
@@ -58,7 +58,7 @@
             <SfIconShoppingCart />
             <SfBadge
               :content="cartItemsCount"
-              class="outline outline-primary-500 bg-white !text-neutral-900 group-hover:outline-primary-800 group-active:outline-primary-700 flex justify-center"
+              class="outline outline-primary-500 bg-white !text-neutral-900 group-hover:outline-primary-800 group-active:outline-primary-700 flex justify-center text-xs leading-3"
               data-testid="cart-badge"
             />
           </template>
@@ -90,7 +90,7 @@
                 v-else
                 :tag="NuxtLink"
                 :to="link"
-                :class="{ 'bg-neutral-200': $route.path === link }"
+                :class="{ 'bg-neutral-200': route.path === link }"
                 data-testid="account-dropdown-list-item"
               >
                 {{ label }}
@@ -144,7 +144,6 @@
     </div>
   </MegaMenu>
   <LanguageSelector />
-  <UiNotifications />
   <UiModal
     v-if="viewport.isGreaterOrEquals('md') && isAuthenticationOpen"
     v-model="isAuthenticationOpen"
@@ -199,6 +198,7 @@ import {
   useDisclosure,
 } from '@storefront-ui/vue';
 import LanguageSelector from '~/components/LanguageSelector/LanguageSelector.vue';
+import { paths } from '~/utils/paths';
 
 const isLogin = ref(true);
 const { data: cart } = useCart();
@@ -207,6 +207,7 @@ const cartItemsCount = ref(0);
 
 const NuxtLink = resolveComponent('NuxtLink');
 const { t } = useI18n();
+const route = useRoute();
 const localePath = useLocalePath();
 const { isOpen: isAccountDropdownOpen, toggle: accountDropdownToggle } = useDisclosure();
 const { isOpen: isAuthenticationOpen, open: openAuthentication, close: closeAuthentication } = useDisclosure();

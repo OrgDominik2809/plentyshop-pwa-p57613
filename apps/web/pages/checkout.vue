@@ -90,6 +90,10 @@
                 {{ t('buy') }}
               </span>
             </UiButton>
+            <PayPalApplePayButton
+              :style="createOrderLoading || disableShippingPayment || cartLoading ? 'pointer-events: none;' : ''"
+              @button-clicked="validateTerms"
+            />
           </OrderSummary>
         </div>
       </div>
@@ -148,13 +152,8 @@ const paypalCreditCardPaymentId = computed(() =>
 );
 
 const loadAddresses = async () => {
-  await Promise.all([
-    getBillingAddresses(),
-    getShippingAddresses(),
-    getShippingMethods(),
-    getCart(),
-    fetchPaymentMethods(),
-  ]);
+  await getCart();
+  await Promise.all([getBillingAddresses(), getShippingAddresses(), getShippingMethods(), fetchPaymentMethods()]);
 };
 
 await loadAddresses();
