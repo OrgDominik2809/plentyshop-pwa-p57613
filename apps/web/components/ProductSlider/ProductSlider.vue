@@ -24,7 +24,6 @@
       "
       :image-height="productGetters.getImageHeight(product) || 600"
       :image-width="productGetters.getImageWidth(product) || 600"
-      :price="productGetters.getSpecialPrice(product)"
       :rating-count="productGetters.getTotalReviews(product)"
       :rating="productGetters.getAverageRating(product, 'half')"
       is-from-slider
@@ -45,8 +44,7 @@ import { SfScrollable } from '@storefront-ui/vue';
 import type { ProductSliderProps } from '~/components/ProductSlider/types';
 
 const { addModernImageExtension } = useModernImage();
-const runtimeConfig = useRuntimeConfig();
-const showNetPrices = runtimeConfig.public.showNetPrices;
+const { showNetPrices } = useCustomer();
 
 defineProps<ProductSliderProps>();
 </script>

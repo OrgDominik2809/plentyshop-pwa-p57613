@@ -10,7 +10,7 @@
   <div class="payment-container" id="pay-container">
     <div class="row">
       <div class="grid-cols-12">
-        <span class="text-sm font-medium">{{ t('paypal.unbrandedCardNumber') }}</span>
+        <UiFormLabel class="pl-2">{{ t('paypal.unbrandedCardNumber') }} *</UiFormLabel>
         <div id="card-number"></div>
       </div>
     </div>
@@ -18,26 +18,21 @@
     <div class="grid grid-cols-2 gap-x-5 mt-5">
       <div>
         <div class="grid-cols-12">
-          <span class="text-sm font-medium">{{ t('paypal.unbrandedExpirationDate') }}</span>
+          <UiFormLabel class="pl-2">{{ t('paypal.unbrandedExpirationDate') }} *</UiFormLabel>
           <div id="expiration-date"></div>
         </div>
       </div>
       <div>
         <div class="grid-cols-12">
-          <span class="text-sm font-medium">{{ t('paypal.unbrandedCvv') }}</span>
+          <UiFormLabel class="pl-2">{{ t('paypal.unbrandedCvv') }} *</UiFormLabel>
           <div id="credit-card-cvv"></div>
         </div>
       </div>
     </div>
 
-    <div class="row mt-5">
-      <label class="hosted-fields--label">
-        <span class="text-sm font-medium">{{ t('paypal.unbrandedNameOnCard') }}</span>
-        <SfInput id="credit-card-name" v-model="cardHolder" class="hosted-field" />
-      </label>
-    </div>
+    <p class="text-sm text-neutral-500 mt-4 mb-2">* {{ t('contact.form.asterixHint') }}</p>
 
-    <div class="flex justify-between mt-5">
+    <div class="flex justify-end gap-x-4 mt-6">
       <div>
         <UiButton @click="confirmCancel" type="button" variant="secondary">{{ t('paypal.unbrandedCancel') }}</UiButton>
       </div>
@@ -55,22 +50,20 @@
 
 <script lang="ts" setup>
 import { cartGetters, orderGetters } from '@plentymarkets/shop-api';
-import { SfIconClose, SfInput, SfLoaderCircular } from '@storefront-ui/vue';
+import { SfIconClose, SfLoaderCircular } from '@storefront-ui/vue';
 import { CardFieldsOnApproveData } from '@paypal/paypal-js';
 
 const { shippingPrivacyAgreement } = useAdditionalInformation();
 const { data: cart, clearCartItems } = useCart();
 const { send } = useNotification();
-const { loadScript, createCreditCardTransaction, captureOrder, executeOrder } = usePayPal();
+const { getScript, createCreditCardTransaction, captureOrder, executeOrder } = usePayPal();
 const { createOrder } = useMakeOrder();
 const loading = ref(false);
 const emit = defineEmits(['confirmPayment', 'confirmCancel']);
 const localePath = useLocalePath();
 const { t } = useI18n();
-
 const currency = computed(() => cartGetters.getCurrency(cart.value) || (useAppConfig().fallbackCurrency as string));
-const paypal = await loadScript(currency.value);
-const cardHolder = ref('');
+const paypal = await getScript(currency.value);
 
 const confirmCancel = () => {
   emit('confirmCancel');
@@ -105,15 +98,19 @@ onMounted(() => {
         }
         const order = await createOrder({
           paymentId: cart.value.methodOfPaymentId,
-          shippingPrivacyHintAccepted: shippingPrivacyAgreement.value,
-        });
-        await executeOrder({
-          mode: 'paypal',
-          plentyOrderId: Number.parseInt(orderGetters.getId(order)),
-          paypalTransactionId: data.orderID,
+          additionalInformation: { shippingPrivacyHintAccepted: shippingPrivacyAgreement.value },
         });
 
+        if (order) {
+          await executeOrder({
+            mode: 'PAYPAL_UNBRANDED_CARD',
+            plentyOrderId: Number.parseInt(orderGetters.getId(order)),
+            paypalTransactionId: data.orderID,
+          });
+        }
+
         if (order?.order?.id) {
+          useProcessingOrder().processingOrder.value = true;
           clearCartItems();
 
           navigateTo(

@@ -52,8 +52,7 @@
                   orderGetters.isItemSalableAndActive(order, item) && orderGetters.hasAllOrderPropertiesAvailable(item)
                 "
                 :price="orderGetters.getOrderAgainInformationPrice(item)"
-                :normal-price="orderGetters.getOrderAgainInformationPrice(item)"
-                :old-price="orderGetters.getItemPrice(item)"
+                :crossed-price="orderGetters.getItemPrice(item)"
               />
               <div
                 v-if="orderGetters.getItemShortDescription(order, item)"
@@ -233,8 +232,8 @@ const { send } = useNotification();
 const { addModernImageExtension } = useModernImage();
 const { isOpen, addOrderToCart, loading, hasItemsChanged } = useOrderAgain();
 const { t, n } = useI18n();
-const runtimeConfig = useRuntimeConfig();
-const showNetPrices = runtimeConfig.public.showNetPrices;
+const { showNetPrices } = useCustomer();
+
 const localePath = useLocalePath();
 const loadingAddToCart = ref(false);
 
