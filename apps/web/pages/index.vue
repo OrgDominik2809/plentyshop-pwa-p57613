@@ -1,6 +1,6 @@
 <template>
   <div>
-    <EmptyBlock v-if="dataIsEmpty" @add-new-block="addNewBlock(0, 1)" />
+    <EmptyBlock v-if="dataIsEmpty" @add-new-block="openBlockList" />
     <Editor
       v-if="isEditing && currentBlockIndex !== null"
       :index="currentBlockIndex"
@@ -18,9 +18,10 @@
           :clicked-block-index="clickedBlockIndex"
           :is-tablet="isTablet"
           :block-has-data="blockHasData"
-          :get-component="getComponent"
           :tablet-edit="tabletEdit"
-          :add-new-block="addNewBlock"
+          :add-new-block="openBlockList"
+          :change-block-position="changeBlockPosition"
+          :is-last-block="isLastBlock"
           :handle-edit="handleEdit"
           :delete-block="deleteBlock"
         />
@@ -29,9 +30,6 @@
   </div>
 </template>
 <script lang="ts" setup>
-import homepageTemplateDataEn from '../composables/useHomepage/homepageTemplateDataEn.json';
-import homepageTemplateDataDe from '../composables/useHomepage/homepageTemplateDataDe.json';
-
 const {
   currentBlock,
   currentBlockIndex,
@@ -44,43 +42,45 @@ const {
   handleEdit,
   deleteBlock,
   updateBlock,
+  changeBlockPosition,
+  isLastBlock,
+  togglePlaceholder,
 } = useBlockManager();
 
-const { data, initialBlocks, fetchPageTemplate, dataIsEmpty } = useHomepage();
-const { $i18n } = useNuxtApp();
+const { settingsIsDirty, openDrawerWithView, updateNewBlockPosition } = useSiteConfiguration();
+
+const { data, fetchPageTemplate, dataIsEmpty } = useHomepage();
+
 const { isEditing, isEditingEnabled, disableActions } = useEditor();
+const { getRobots, setRobotForStaticPage } = useRobots();
 
-const defaultAddBlock = (lang: string) => {
-  return lang === 'en' ? homepageTemplateDataEn.blocks[1] : homepageTemplateDataDe.blocks[1];
+const openBlockList = (index: number, position: number) => {
+  const insertIndex = (position === -1 ? index : index + 1) || 0;
+  togglePlaceholder(index, position === -1 ? 'top' : 'bottom');
+  updateNewBlockPosition(insertIndex);
+  openDrawerWithView('blocksList');
 };
 
-const addNewBlock = (index: number, position: number) => {
-  const insertIndex = position === -1 ? index : index + 1;
-  const updatedBlocks = [...data.value.blocks];
-
-  updatedBlocks.splice(insertIndex, 0, defaultAddBlock($i18n.locale.value));
-
-  data.value.blocks = updatedBlocks;
-
-  isEditingEnabled.value = !deepEqual(initialBlocks.value, data.value.blocks);
-};
-
-const runtimeConfig = useRuntimeConfig();
-const isHero = ref(runtimeConfig.public.isHero);
-
-const getComponent = (name: string) => {
-  if (name === 'NewsletterSubscribe') return resolveComponent('NewsletterSubscribe');
-  if (name === 'UiTextCard') return resolveComponent('UiTextCard');
-  if (name === 'UiImageText') return resolveComponent('UiImageText');
-  if (name === 'ProductRecommendedProducts') return resolveComponent('ProductRecommendedProducts');
-  if (name === 'UiCarousel') {
-    return isHero.value ? resolveComponent('UiHeroCarousel') : resolveComponent('UiBlazeCarousel');
-  }
-};
+await getRobots();
+setRobotForStaticPage('Homepage');
 
 onMounted(() => {
   isEditingEnabled.value = false;
+  window.addEventListener('beforeunload', handleBeforeUnload);
 });
+
+onBeforeUnmount(() => {
+  window.removeEventListener('beforeunload', handleBeforeUnload);
+});
+
+const hasUnsavedChanges = () => {
+  return !isEditingEnabled.value && !settingsIsDirty.value;
+};
+
+const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+  if (hasUnsavedChanges()) return;
+  event.preventDefault();
+};
 
 fetchPageTemplate();
 </script>

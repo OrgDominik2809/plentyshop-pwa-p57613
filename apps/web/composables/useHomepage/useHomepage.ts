@@ -1,17 +1,20 @@
 import homepageTemplateDataEn from './homepageTemplateDataEn.json';
 import homepageTemplateDataDe from './homepageTemplateDataDe.json';
-import type { HomepageData, UseHomepageDataReturn, UseHomepageDataState } from './types';
+import type { HomepageData, UseHomepageDataReturn, UseHomepageDataState, SetIndex, ActiveSlideIndex } from './types';
+import type { BannerProps } from '~/components/blocks/BannerCarousel/types';
+import type { ProductRecommendedProductsProps } from '~/components/blocks/ProductRecommendedProducts/types';
 
 const useLocaleSpecificHomepageTemplate = (locale: string) =>
-  locale === 'de' ? homepageTemplateDataDe : homepageTemplateDataEn;
+  locale === 'de' ? (homepageTemplateDataDe as HomepageData) : (homepageTemplateDataEn as HomepageData);
 
 export const useHomepage: UseHomepageDataReturn = () => {
   const state = useState<UseHomepageDataState>('useHomepageState', () => ({
-    data: { blocks: [], meta: { isDefault: null } } as HomepageData,
+    data: { blocks: [] as Block[], meta: { isDefault: null } } as HomepageData,
     initialBlocks: [],
     dataIsEmpty: false,
     loading: false,
     showErrors: false,
+    activeSlideIndex: {} as ActiveSlideIndex,
   }));
 
   const { $i18n } = useNuxtApp();
@@ -26,10 +29,13 @@ export const useHomepage: UseHomepageDataReturn = () => {
   const fetchRecommendedProducts = async () => {
     state.value.data.blocks.forEach((block) => {
       if (block.name === 'ProductRecommendedProducts') {
-        const options = block.options as ProductRecommendedProductsOptions;
+        const options = block.options as ProductRecommendedProductsProps;
         const id = options.categoryId;
-        const { fetchProductRecommended } = useProductRecommended(id);
-        fetchProductRecommended(id);
+
+        if (tryUseNuxtApp()) {
+          const { fetchProductRecommended } = useProductRecommended(id);
+          fetchProductRecommended(id);
+        }
       }
     });
   };
@@ -82,8 +88,21 @@ export const useHomepage: UseHomepageDataReturn = () => {
     { deep: true },
   );
 
+  const updateBannerItems: UpdateBannerItems = (newBannerItems: BannerProps[], blockIndex: number) => {
+    const carouselBlock = state.value.data.blocks[blockIndex];
+    if (carouselBlock) {
+      carouselBlock.options = { ...carouselBlock.options, ...{ bannerItems: newBannerItems } };
+    }
+  };
+
+  const setIndex: SetIndex = (blockIndex: number, slideIndex: number) => {
+    state.value.activeSlideIndex[blockIndex] = slideIndex;
+  };
+
   return {
     fetchPageTemplate,
+    updateBannerItems,
+    setIndex,
     ...toRefs(state.value),
   };
 };
