@@ -4,6 +4,8 @@
 
 ### New
 
+- Added testing for recommended products block.
+- Added the ability to push API events into our Core Module.
 - Added recommended products block editing.
 - Dynamic blocks register.
 - Added slider edit.
@@ -30,7 +32,23 @@
 
 ### 👷 Changed
 
+#### Package manager
+
+We've switched our package manager from Yarn to NPM. There are two main reasons for this change:
+
+1. NPM has better tools to audit and fix security vulnerabilities in the dependency tree than Yarn does.
+2. NPM provides better tools for version management via [nvm](https://github.com/nvm-sh/nvm). This matters because it allows us to consolidate apps created by different providers more easily.
+
+**_IMPORTANT_**
+
+- `yarn` commands have been replaced by their `npm` equivalent. For example, `yarn build` is now `npm run build`.
+- Double check `.env.example` for updates. In particular, make sure to set a `DEFAULTLANGUAGE` in your environment.
+
+#### Checkout
+
+- The `Saved addresses` listing option is no longer available in the guest checkout flow.
 - Incomplete PayPal setup will no longer throw an alert in the ui. The error is suppressed and only logged in the browser console.
+- The build script now reads the configuration from the environment instead of fetching it from the remote system.
 
 ### 🩹 Fixed
 
@@ -44,6 +62,8 @@
 - Fixed the image-to-text ratio in the Image Text block, so that both now take up 50% of the available space.
 - Close edit drawer on block removal.
 - Fixed index error on first block add.
+- Fixed the SfSwitcher from Newsletter Form to be reactive.
+- Fixed the 'Save changes' button to be reactive to form editor changes.
 
 ## v1.9.1 (2025-01-29) <a href="https://github.com/plentymarkets/plentyshop-pwa/compare/v1.9.0...v1.9.1" target="_blank" rel="noopener"><b>Overview of all changes</b></a>
 
