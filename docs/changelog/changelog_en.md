@@ -1,5 +1,18 @@
 # Changelog PlentyONE Shop
 
+# v1.xx.x (2025-xx-xx)
+
+### New
+
+- Added feedback notifications for 'Save changes' button.
+
+### Fixed
+
+- Fixed displayed the recommended products on product pages.
+- Fixed the save button not being re-enabled on subsequent edits.
+- Fixed an issue where an empty initial category template couldn't get edited.
+- Fixed an issue that recommended products blocks would fetch the wrong data in the editor when a new one got added.
+
 # v1.10.1 (2025-02-20) <a href="https://github.com/plentymarkets/plentyshop-pwa/compare/v1.10.0...v1.10.1" target="_blank" rel="noopener"><b>Overview of all changes</b></a>
 
 ### Fixed
