@@ -44,7 +44,7 @@ const foundCookies = defaults.PREVIEW_COOKIES.filter((cookie) => !!useCookie(coo
 const useClassFor = (index: number): boolean => foundCookies.length > 1 && index !== 0;
 
 const removeLookupCookie: RemoveLookupCookie = (index: number): void => {
-  useCookie(foundCookies[index], {path: '/'}).value = null;
+  useCookie(foundCookies[index], {path: '/', domain: window.location.host}).value = null;
   bannerIsHidden.value = true;
   foundCookies.splice(index, 1);
 };
