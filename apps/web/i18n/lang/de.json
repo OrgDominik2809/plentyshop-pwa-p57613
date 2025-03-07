@@ -342,6 +342,7 @@
     "heading": "Zahlungsart",
     "noMethodsAvailable": "Es sind keine Zahlungsarten verfügbar. Bitte kontaktieren Sie den Webshop-Anbieter."
   },
+  "checkoutExportDelivery": "Mit der Bestellung nehme ich zur Kenntnis, dass der Versand aus dem Land {shopCountry} in das Zielland {deliveryCountry} erfolgt. Die dortige Mehrwertsteuer, die Verzollungskosten und Zölle sind in der Endsumme der Bestellung nicht inbegriffen und sind Dritten zu bezahlen. Sie gehen zu meinen Lasten.",
   "clear": "Zurücksetzen",
   "clearFilters": "Alle Filter löschen",
   "closeDialog": "Dialogfenster schließen",
@@ -523,7 +524,7 @@
     "editor": {
       "save": {
         "success": "Die Änderungen wurden gespeichert.",
-        "editor": "Template-Änderungen werden sofort veröffentlicht, wenn die Homepage-Kategorie mit dem Live-Shop verknüpft ist.",
+        "editor": "Änderungen am Seiteninhalt werden sofort veröffentlicht, wenn die Homepage-Kategorie mit dem Live-Shop verknüpft ist.",
         "settings": "Um Einstellungen zu veröffentlichen, baue den Shop und schalte die Instanz live.",
         "error": "Die Änderungen konnten nicht gespeichert werden. Falls die aktuelle Sitzung abgelaufen ist, starte eine neue Sitzung. Öffne dazu den Editor erneut."
       }

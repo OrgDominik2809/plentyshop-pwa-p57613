@@ -1,5 +1,33 @@
 # Changelog PlentyONE Shop
 
+# v1.11.1 (2025-02-28) <a href="https://github.com/plentymarkets/plentyshop-pwa/compare/v1.11.0...v1.11.1" target="_blank" rel="noopener"><b>Übersicht aller Änderungen</b></a>
+
+Gerne, hier ist die Übersetzung der Aufzählungspunkte ins Deutsche:
+
+### 👷 Geändert
+
+- Die Schaltflächen zum Speichern der Adresse wurden an das Ende des Formulars verschoben, um die Benutzerfreundlichkeit zu verbessern.
+- Die Chunk-Größe wurde reduziert, indem große Dateien in den Ordner `public` verschoben und die Daten jetzt abgerufen statt importiert werden.
+- Die Chunk-Größe wurde reduziert, indem die Lodash-Bibliothek vollständig entfernt und benutzerdefinierte JS-Funktionen verwendet wurden.
+
+### 🩹 Behoben
+
+- Ein Problem wurde behoben, bei dem das Löschen der Checkout-Adresse als Gast einen unbekannten Fehler auslöste.
+- Es wurde behoben, dass Website-Einstellungen beim erneuten Bauen nicht beibehalten wurden.
+
+# v1.11.0 (2025-02-25) <a href="https://github.com/plentymarkets/plentyshop-pwa/compare/v1.10.1...v1.11.0" target="_blank" rel="noopener"><b>Übersicht aller Änderungen</b></a>
+
+### Neu
+
+- Benachrichtigungen beim erfolgreichen oder fehlgeschlagenen Speichern von Änderungen im Editor hinzugefügt.
+
+### Behoben
+
+- Anzeige der empfohlenen Produkte auf Produktseiten korrigiert.
+- Problem behoben, bei dem der Speichern-Button bei nachfolgenden Bearbeitungen nicht wieder aktiviert wurde.
+- Problem behoben, bei dem eine leere anfängliche Kategorievorlage nicht bearbeitet werden konnte.
+- Problem behoben, bei dem empfohlene Produkt-Blöcke im Editor falsche Daten abriefen, wenn ein neuer Block hinzugefügt wurde.
+
 # v1.10.1 (2025-02-20) <a href="https://github.com/plentymarkets/plentyshop-pwa/compare/v1.10.0...v1.10.1" target="_blank" rel="noopener"><b>Übersicht aller Änderungen</b></a>
 
 - Problem behoben, bei dem während des Bauens Sprachdateien in den falschen Pfad geschrieben werden.

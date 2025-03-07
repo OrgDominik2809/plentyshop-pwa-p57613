@@ -1,12 +1,42 @@
 # Changelog PlentyONE Shop
 
-# v1.xx.x (2025-xx-xx)
+# v1.x.x (yyyy-mm-dd)
 
 ### New
 
-- Added feedback notifications for 'Save changes' button.
+- Added site settings toolbar.
+- Added a legal hint in the checkout for "local VAT, costs of customs clearance and customs duties" if necessary.
 
-### Fixed
+#### Changed
+
+- Assets in the `apps/web/public` directory have been moved to a new `_nuxt-plenty/` subdirectory. Additionally, the [@nuxtjs/google-fonts](https://google-fonts.nuxtjs.org/) module has been replaced with the [@nuxt/fonts](https://fonts.nuxt.com/) module, which is similar in functionality, but provides more configuration options. Both of these changes make it easier to apply network routing rules on the back end.
+- Renamed block sections for editor.
+
+### 🩹 Fixed
+
+- Toolbar language switch fix.
+- Added scroll to block after changing block position.
+
+# v1.11.1 (2025-02-28) <a href="https://github.com/plentymarkets/plentyshop-pwa/compare/v1.11.0...v1.11.1" target="_blank" rel="noopener"><b>Overview of all changes</b></a>
+
+### 👷 Changed
+
+- The address saving buttons have been relocated to the bottom of the form to enhance the user experience.
+- Reduced chunck size by moving heavy files to public folder fetching the data instead of importing it
+- Reduced chunk size by removing the lodash library completely and using custom js functions
+
+### 🩹 Fixed
+
+- Fixed an issue where deleting the checkout address as a guest triggered an unknown error.
+- Fixed site settings not persisting on rebuild.
+
+# v1.11.0 (2025-02-25) <a href="https://github.com/plentymarkets/plentyshop-pwa/compare/v1.10.1...v1.11.0" target="_blank" rel="noopener"><b>Overview of all changes</b></a>
+
+### New
+
+- Added success and error notifications when saving changes in the editor.
+
+### 🩹 Fixed
 
 - Fixed displayed the recommended products on product pages.
 - Fixed the save button not being re-enabled on subsequent edits.
